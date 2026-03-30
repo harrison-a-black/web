@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
   <title>Harrison Black</title>
   <link rel="stylesheet" href="https://use.typekit.net/jvs7hgk.css" />
 
   <style>
     /* ─── Tokens ─────────────────────────────────────────── */
     :root {
+      color-scheme: dark;
       --bg:       #000000;
       --bg-nav:   rgba(0, 0, 0, 0.82);
       --text:     #f0ece4;
@@ -45,8 +47,15 @@
       transition: background 0.35s ease, color 0.35s ease;
     }
 
-    /* ─── Cursor ─────────────────────────────────────────── */
-    body { cursor: none; }
+    /* ─── Cursor (pointer devices only) ─────────────────── */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      .form-field input,
+      .form-field select,
+      .form-field textarea { cursor: none; }
+      .form-submit { cursor: none; }
+      #theme-toggle { cursor: none; }
+    }
     #cursor {
       position: fixed;
       width: 10px; height: 10px;
@@ -67,7 +76,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.4rem 3rem;
+      padding: 1.4rem max(3rem, calc((100vw - 1380px) / 2 + 3rem));
       background: var(--bg-nav);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -79,7 +88,7 @@
       font-family: "poplar-std", sans-serif;
       font-weight: 800;
       font-style: italic;
-      font-size: 1.05rem;
+      font-size: 1.35rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text);
@@ -108,7 +117,6 @@
 
     /* ─── Theme Toggle ───────────────────────────────────── */
     #theme-toggle {
-      cursor: none;
       background: none;
       border: 1px solid rgba(255,255,255,0.25);
       color: var(--text);   /* always matches nav logo + CTA brightness */
@@ -136,8 +144,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 0 3rem 5rem;
-      padding-top: 7rem; /* clear the fixed nav */
+      padding: 7rem max(3rem, calc((100vw - 1380px) / 2 + 3rem)) 5rem;
       position: relative;
       overflow: hidden;
     }
@@ -178,6 +185,7 @@
 
     .hero-label {
       font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--muted);
@@ -211,25 +219,27 @@
       transform: translateY(110%);
       animation: wordUp 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-    .hero-headline .word:nth-child(1) span { animation-delay: 0.55s; }
-    .hero-headline .word:nth-child(2) span { animation-delay: 0.68s; }
-    .hero-headline .word:nth-child(3) span { animation-delay: 0.78s; }
-    .hero-headline .word:nth-child(4) span { animation-delay: 0.88s; }
-    .hero-headline .word:nth-child(5) span { animation-delay: 0.98s; }
-    .hero-headline .word:nth-child(6) span { animation-delay: 1.08s; }
+    .hero-headline .w1 span { animation-delay: 0.55s; }
+    .hero-headline .w2 span { animation-delay: 0.55s; }
+    .hero-headline .w3 span { animation-delay: 1.0s; }
+    .hero-headline .w4 span { animation-delay: 1.0s; }
+    .hero-headline .w5 span { animation-delay: 1.0s; }
+    .hero-headline .w6 span { animation-delay: 1.45s; }
     @keyframes wordUp { to { transform: translateY(0); } }
 
     /* ─── Typewriter ─────────────────────────────────────── */
     .hero-sub {
       margin-top: 2.4rem;
       font-size: clamp(1rem, 1.4vw, 1.18rem);
+      font-weight: 700;
       color: var(--text);
-      max-width: 52ch;
+      max-width: 100%;
+      white-space: nowrap;
       opacity: 0;
       animation: fadeUp 0.7s ease 1.5s forwards;
       line-height: 1.55;
     }
-    .hero-sub .static { color: var(--muted); }
+    .hero-sub .static { color: var(--muted); font-weight: 700; }
     .hero-sub .typewriter-wrap {
       display: inline;
     }
@@ -281,7 +291,7 @@
 
     /* ─── SHARED SECTION ─────────────────────────────────── */
     section {
-      padding: 6rem 3rem;
+      padding: 6rem max(3rem, calc((100vw - 1380px) / 2 + 3rem));
       border-top: 1px solid var(--border);
     }
 
@@ -307,9 +317,9 @@
 
     /* ─── DIVIDER ACCENT ─────────────────────────────────── */
     .accent-rule {
-      height: 1px;
+      height: 2px;
       background: linear-gradient(to right, var(--accent) 0%, var(--magenta) 50%, transparent 100%);
-      opacity: 0.35;
+      opacity: 0.65;
       border: none;
       margin: 0;
     }
@@ -329,6 +339,7 @@
     .purpose-statement em {
       font-style: normal;
       color: var(--accent);
+      margin-left: 0.18em;
     }
 
     .purpose-body {
@@ -472,10 +483,11 @@
       border-top: 1px solid var(--border);
     }
     .stat {
-      padding: 2.5rem 3rem;
+      padding: 2.5rem max(3rem, calc((100vw - 1380px) / 2 + 3rem)) 2.5rem max(3rem, calc((100vw - 1380px) / 2 + 3rem));
       border-right: 1px solid var(--border);
     }
     .stat:last-child { border-right: none; }
+    .stats-bar .stat:not(:first-child):not(:last-child) { padding-left: 3rem; padding-right: 3rem; }
     .stat-num {
       font-family: "poplar-std", sans-serif;
       font-weight: 800;
@@ -490,12 +502,45 @@
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
-      padding: 6rem 3rem;
+      padding: 6rem max(3rem, calc((100vw - 1380px) / 2 + 3rem));
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: end;
-      gap: 2rem;
+      gap: 0;
+    }
+
+    .footer-cta-wrap,
+    .contact-cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding-bottom: 0;
+      border-bottom: none;
+      text-decoration: none;
+      width: 100%;
+      transition: border-color 0.3s;
+    }
+    .footer-cta-wrap:hover,
+    .contact-cta-wrap:hover { border-color: var(--accent); }
+    .footer-convo {
+      display: inline-block;
+      color: var(--accent);
+      transition: letter-spacing 0.3s ease, color 0.2s;
+    }
+    .footer-cta-wrap:hover .footer-convo,
+    .contact-cta-wrap:hover .footer-convo {
+      color: #c8ff2e;
+      letter-spacing: 0.04em;
+    }
+    .footer-cta-wrap:hover .footer-email,
+    .contact-cta-wrap:hover .footer-email { color: var(--accent); }
+    .contact-reply-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-top: 0.8rem;
     }
 
     .footer-headline {
@@ -508,25 +553,17 @@
       line-height: 0.92;
       max-width: 700px;
     }
-    .footer-headline a {
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-block;
-      transition: letter-spacing 0.3s ease, color 0.2s;
-    }
-    .footer-headline a:hover { letter-spacing: 0.04em; color: var(--magenta); }
 
     .footer-aside { text-align: right; }
     .footer-email {
       font-size: 0.85rem;
       letter-spacing: 0.12em;
       color: var(--muted);
-      text-decoration: none;
       display: block;
       margin-bottom: 1rem;
       transition: color 0.2s;
     }
-    .footer-email:hover { color: var(--cyan); }
+    .footer-cta-wrap:hover .footer-email { color: var(--accent); }
 
     .footer-bottom {
       grid-column: 1 / -1;
@@ -534,6 +571,7 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 2.5rem;
+      margin-top: 2rem;
       border-top: 1px solid var(--border);
       font-size: 0.72rem;
       letter-spacing: 0.1em;
@@ -573,8 +611,8 @@
       align-items: center;
       gap: 0.55rem;
       background: rgba(255, 154, 60, 0.1);
-      border: 1px solid #FF9A3C;
-      color: #FF9A3C;
+      border: 1px solid #22c55e;
+      color: #22c55e;
       padding: 0.5rem 1.1rem 0.5rem 0.85rem;
       border-radius: 999px;
       font-size: 0.72rem;
@@ -585,13 +623,13 @@
     .pill-dot {
       width: 7px; height: 7px;
       border-radius: 50%;
-      background: #FF9A3C;
+      background: #22c55e;
       flex-shrink: 0;
       animation: pillPulse 2.2s ease-in-out infinite;
     }
     @keyframes pillPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255,154,60,0.55); }
-      50%       { box-shadow: 0 0 0 5px rgba(255,154,60,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+      50%       { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
     }
 
     /* ─── Footer Ack / WCAG Blocks ───────────────────────── */
@@ -600,13 +638,14 @@
       padding-top: 1.8rem;
       border-top: 1px solid var(--border);
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      flex-direction: row;
+      gap: 3rem;
     }
     .footer-meta-item {
       display: flex;
       align-items: flex-start;
       gap: 1rem;
+      flex: 1;
     }
     .footer-meta-icon {
       flex-shrink: 0;
@@ -631,6 +670,84 @@
       font-size: 0.62rem;
     }
 
+    /* ─── ABOUT ──────────────────────────────────────────────── */
+    .about-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: start; }
+    .about-headline {
+      font-family: "poplar-std", sans-serif; font-weight: 800; font-style: italic;
+      font-size: clamp(2rem, 4vw, 3.8rem); text-transform: uppercase;
+      color: var(--text); line-height: 0.95; margin-bottom: 2rem;
+    }
+    .about-headline em { font-style: normal; color: var(--accent); display: block; margin-left: 0.18em; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+    .about-tag {
+      font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--border); padding: 0.35rem 0.8rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .about-tag:hover { border-color: var(--accent); color: var(--accent); }
+    .about-right p { color: var(--muted); font-size: 1rem; line-height: 1.75; }
+    .about-right p + p { margin-top: 1.1rem; }
+
+    /* ─── CONTACT FORM ───────────────────────────────────────── */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem; align-items: start; }
+    .contact-headline {
+      font-family: "poplar-std", sans-serif; font-weight: 800; font-style: italic;
+      font-size: clamp(2rem, 3.5vw, 3.5rem); text-transform: uppercase;
+      color: var(--text); line-height: 0.95; margin-bottom: 1.2rem;
+    }
+    .contact-headline em { font-style: normal; color: var(--accent); margin-left: 0.18em; }
+    .contact-sub { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.06em; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.4rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-field label {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+    .form-field input, .form-field select, .form-field textarea {
+      background: var(--card-bg); border: 1px solid var(--border); color: var(--text);
+      font-family: "freight-sans-pro", sans-serif; font-size: 0.95rem;
+      padding: 0.85rem 1rem; outline: none; transition: border-color 0.2s;
+      resize: none; -webkit-appearance: none; appearance: none; border-radius: 0;
+    }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+    .form-field select option { background: var(--bg); }
+    .form-submit-row { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .form-submit {
+      font-family: "poplar-std", sans-serif; font-weight: 800; font-style: italic;
+      font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--accent); color: #000; border: none; padding: 0.9rem 2rem;
+      display: flex; align-items: center; gap: 0.6rem; cursor: none;
+      transition: background 0.2s, transform 0.15s, gap 0.2s;
+    }
+    .form-submit:hover { background: var(--magenta); color: #fff; gap: 1rem; }
+    .form-submit:active { transform: scale(0.98); }
+    .form-note { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; }
+    .form-note a { color: var(--muted); text-decoration: underline; transition: color 0.2s; }
+    .form-note a:hover { color: var(--accent); }
+    .form-success {
+      display: none; align-items: center; gap: 0.75rem; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600;
+    }
+    .form-success.visible { display: flex; }
+    @media (max-width: 768px) {
+      .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-submit-row { flex-direction: column; align-items: flex-start; }
+    }
+
+        /* ─── NAV LOGO WAVE ──────────────────────────────────── */
+    .nav-logo .letter { display: inline-block; transition: color 0.2s ease; }
+    @keyframes letterWave {
+      0%, 100% { transform: translateY(0); }
+      40%       { transform: translateY(-5px); }
+      60%       { transform: translateY(-3px); }
+    }
+    .nav-logo.waving .letter {
+      animation: letterWave 0.9s ease-in-out infinite;
+    }
+
     /* ─── UTILITIES ──────────────────────────────────────── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
@@ -639,29 +756,305 @@
 
     /* ─── RESPONSIVE ─────────────────────────────────────── */
     @media (max-width: 768px) {
-      nav { padding: 1.1rem 1.5rem; }
-      .hero { padding: 5rem 1.5rem 3.5rem; }
+      /* ── Cursor: hide custom dot on touch devices ── */
+      body { cursor: auto; }
+      #cursor { display: none; }
+
+      /* ── Overflow: prevent horizontal scroll ── */
+      html, body { overflow-x: hidden; max-width: 100vw; }
+
+      /* ── Nav ── */
+      nav { padding: 1rem 1.25rem; }
+      .nav-logo { font-size: 1.1rem; }
+      .nav-right { gap: 1rem; }
+      .nav-cta { font-size: 0.68rem; }
+      #theme-toggle { width: 30px; height: 30px; }
+
+      /* ── Hero ── */
+      .hero {
+        padding: 6rem 1.25rem 3rem;
+        min-height: 100svh;
+        overflow: hidden;
+      }
+      .hero-headline {
+        font-size: clamp(1.9rem, 9vw, 4rem);
+        line-height: 0.95;
+        padding-right: 0;
+        overflow: hidden;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+      .hero-sub {
+        font-size: 0.88rem;
+        white-space: normal;
+        max-width: 100%;
+        margin-top: 1.6rem;
+        min-height: 3.6em;
+        display: block;
+        overflow: hidden;
+      }
       .hero-scroll { display: none; }
-      section { padding: 4rem 1.5rem; }
-      .why-layout { grid-template-columns: 1fr; gap: 2.5rem; }
-      footer { padding: 4rem 1.5rem; grid-template-columns: 1fr; }
+      .hero-line { margin-bottom: 1.5rem; }
+      .hero-label { font-size: 0.65rem; margin-bottom: 1.2rem; }
+
+      /* ── Sections ── */
+      section { padding: 3.5rem 1.25rem; }
+      .section-tag { margin-bottom: 1.8rem; }
+
+      /* ── Purpose ── */
+      .purpose-statement { font-size: clamp(1.8rem, 8vw, 3rem); }
+      .purpose-body { font-size: 0.95rem; margin-top: 1.5rem; }
+
+      /* ── Services grid ── */
+      .services-grid { grid-template-columns: 1fr; gap: 1px; }
+      .service-card { padding: 1.6rem; }
+      .service-title { font-size: 1.3rem; }
+
+      /* ── Work ── */
+      .work-item { padding: 1.6rem 0; gap: 1rem; }
+      .work-name { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+      .work-item:hover { padding-left: 0; }
+
+      /* ── Why ── */
+      .why-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .why-headline { font-size: clamp(1.8rem, 8vw, 3rem); }
+
+      /* ── About ── */
+      .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .about-headline { font-size: clamp(1.8rem, 8vw, 3rem); margin-bottom: 1rem; }
+      .about-right p { font-size: 0.92rem; }
+      .about-tags { gap: 0.4rem; }
+
+      /* ── Contact form ── */
+      .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-cta-wrap .footer-headline { font-size: clamp(2rem, 9vw, 3.5rem); }
+      .form-row { grid-template-columns: 1fr; gap: 1rem; }
+      .form-submit-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .contact-form { gap: 1rem; }
+
+      /* ── Footer ── */
+      footer {
+        padding: 3rem 1.25rem;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .footer-headline { font-size: clamp(2rem, 9vw, 3.5rem); }
       .footer-aside { text-align: left; }
-      .footer-bottom { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
-      .stats-bar { grid-template-columns: 1fr; }
-      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; }
-      .stat:last-child { border-bottom: none; }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .footer-meta {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .footer-cta-wrap {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding-bottom: 1.5rem;
+      }
+
+      /* ── Force black backgrounds — bypass iOS Safari colour-scheme override ── */
+      body,
+      section,
+      footer,
+      .hero,
+      .service-card,
+      .stats-bar,
+      .stats-bar-outer,
+      .work-item,
+      .about-layout,
+      .contact-layout,
+      .contact-form,
+      .form-field input,
+      .form-field select,
+      .form-field textarea,
+      .snake-overlay { background-color: #000000 !important; }
+      .service-card,
+      .form-field input,
+      .form-field select,
+      .form-field textarea { background-color: #0b0b0b !important; }
+      nav { background: rgba(0,0,0,0.92) !important; }
+      .nav-logo { color: var(--text); }
+      .nav-cta  { color: var(--text); }
+      #theme-toggle { color: var(--text); }
+      [data-theme="light"] .hero::after { opacity: 0.06; }
+      [data-theme="light"] .accent-rule { opacity: 0.5; }
+
+      /* ── Snake game ── */
+      #snake-canvas { width: 300px; height: 300px; }
+      #snake-container { outline-width: 1px; }
+      #snake-header { width: 300px; }
     }
+
+    @media (max-width: 400px) {
+      .hero-headline { font-size: clamp(2.4rem, 11vw, 3.5rem); }
+      .nav-cta:not([href="#contact"]) { display: none; }
+    }
+
+    /* ─── Scroll Progress Bar ────────────────────────────── */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(to right, var(--accent), var(--magenta));
+      z-index: 200;
+      transition: width 0.1s linear;
+      pointer-events: none;
+    }
+
+    /* ─── Snake Game ─────────────────────────────────────── */
+    #snake-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    #snake-overlay.active { display: flex; }
+    #snake-container {
+      position: relative;
+      border: 1px solid var(--border);
+      outline: 2px solid var(--accent);
+      box-shadow: 0 0 40px rgba(200,255,46,0.12);
+    }
+    #snake-canvas { display: block; }
+    #snake-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      width: 360px;
+      margin-bottom: 0.5rem;
+    }
+    #snake-title {
+      font-family: "poplar-std", sans-serif;
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    #snake-score-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    #snake-score {
+      font-family: "poplar-std", sans-serif;
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    #snake-hint {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    #snake-hint span { color: var(--cyan); }
+    #snake-close {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      transition: color 0.2s;
+      align-self: center;
+    }
+    #snake-close:hover { color: var(--accent); }
+    #snake-message {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      background: rgba(0,0,0,0.85);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #snake-message.visible { opacity: 1; pointer-events: auto; }
+    #snake-msg-title {
+      font-family: "poplar-std", sans-serif;
+      font-weight: 800;
+      font-style: italic;
+      font-size: 2rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      line-height: 1;
+    }
+    #snake-msg-sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
   </style>
+  <script>
+    /* ─── Force dark on every load, no exceptions ────────────── */
+    document.documentElement.setAttribute("data-theme", "dark");
+    // Wipe any stored preference that could override this
+    localStorage.removeItem("hb-theme");
+    localStorage.removeItem("hb-theme-v2");
+
+    /* ─── Random accent on every load ───────────────────────── */
+    (function() {
+      const themes = [
+        { accent: "#c8ff2e", magenta: "#EC12D6", cyan: "#1CA3C9" },
+        { accent: "#1CA3C9", magenta: "#EC12D6", cyan: "#c8ff2e" }
+      ];
+      const t = themes[Math.floor(Math.random() * themes.length)];
+      const root = document.documentElement;
+      root.style.setProperty("--accent",  t.accent);
+      root.style.setProperty("--magenta", t.magenta);
+      root.style.setProperty("--cyan",    t.cyan);
+    })();
+  </script>
 </head>
 <body>
 
+<div id="snake-overlay">
+  <div id="snake-header">
+    <span id="snake-title">Snake.</span>
+    <span>
+      <span id="snake-score-label">Score&nbsp;</span>
+      <span id="snake-score">0</span>
+    </span>
+    <button id="snake-close" onclick="closeSnake()">ESC to close</button>
+  </div>
+  <div id="snake-container">
+    <canvas id="snake-canvas" width="360" height="360"></canvas>
+    <div id="snake-message">
+      <div id="snake-msg-title">GAME OVER.</div>
+      <div id="snake-msg-sub">Press Space to restart</div>
+    </div>
+  </div>
+  <div id="snake-hint">Arrow keys or <span>WASD</span> to move &nbsp;·&nbsp; <span>Space</span> to start</div>
+</div>
+
+<div id="scroll-progress"></div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <div id="cursor" aria-hidden="true"></div>
 
 <!-- ─── NAV ────────────────────────────────────────────────── -->
 <nav>
-  <a href="#" class="nav-logo">Harrison Black</a>
+  <a href="#" class="nav-logo" id="nav-logo"><span class="letter">H</span><span class="letter">a</span><span class="letter">r</span><span class="letter">r</span><span class="letter">i</span><span class="letter">s</span><span class="letter">o</span><span class="letter">n</span><span class="letter"> </span><span class="letter">B</span><span class="letter">l</span><span class="letter">a</span><span class="letter">c</span><span class="letter">k</span></a>
   <div class="nav-right">
+    <a href="#about" class="nav-cta">About</a>
     <a href="#contact" class="nav-cta">Get in touch</a>
     <button id="theme-toggle" aria-label="Toggle light/dark mode">
       <!-- Sun icon (shown in dark mode) -->
@@ -680,15 +1073,14 @@
 <section class="hero" id="main-content" style="border: none; padding-top: 7rem;">
   <div>
     <span class="hero-line"></span>
-    <p class="hero-label">Freelance Marketing &amp; Strategy</p>
+    <p class="hero-label">Freelance Design &amp; Digital</p>
 
     <h1 class="hero-headline" aria-label="Empowering change: because the world needs changing.">
-      <span class="word"><span>Empowering</span></span>&nbsp;
-      <span class="word"><span>change:</span></span><br>
-      <span class="word"><span>because</span></span>&nbsp;
-      <span class="word"><span>the</span></span>&nbsp;
-      <span class="word"><span>world</span></span>&nbsp;
-      <span class="word"><span>needs&nbsp;changing.</span></span>
+      <span class="word w1"><span>Empowering</span></span>&nbsp;
+      <span class="word w2"><span>change:</span></span><br>
+      <span class="word w3"><span>because</span></span> <span class="word w4"><span>the</span></span>&nbsp;
+      <span class="word w5"><span>world</span></span>&nbsp;
+      <span class="word w6"><span>needs changing.</span></span>
     </h1>
 
     <p class="hero-sub">
@@ -704,10 +1096,10 @@
 <section id="purpose">
   <p class="section-tag reveal"><span class="num">01</span>Purpose</p>
   <h2 class="purpose-statement reveal">
-    Good strategy<br>
-    doesn't shout.<br>
-    It <em>listens, clarifies</em><br>
-    &amp; moves people.
+    Good design<br>
+    doesn't just look right.<br>
+    It <em>feels right,</em><br>
+    &amp; makes things happen.
   </h2>
   <div class="purpose-body reveal">
     <p>
@@ -728,66 +1120,50 @@
   <div class="services-grid">
     <div class="service-card reveal">
       <p class="service-num">01</p>
-      <p class="service-title">Marketing Strategy</p>
+      <p class="service-title">Web Design</p>
       <p class="service-desc">
-        Clear, purposeful strategy that connects your mission with the
-        audiences who need to hear from you - honestly and effectively.
+        Custom websites designed from the ground up — fast, accessible,
+        and built to convert. No templates, no shortcuts.
       </p>
     </div>
     <div class="service-card reveal" style="transition-delay:0.1s">
       <p class="service-num">02</p>
-      <p class="service-title">Brand Messaging</p>
+      <p class="service-title">Visual Identity</p>
       <p class="service-desc">
-        Finding the language that captures what you stand for. Narratives,
-        taglines, and communications built on substance, not spin.
+        Logos, colour systems, and brand guidelines that give your
+        organisation a distinct, consistent look across every touchpoint.
       </p>
     </div>
     <div class="service-card reveal" style="transition-delay:0.2s">
       <p class="service-num">03</p>
-      <p class="service-title">Campaign Creative</p>
+      <p class="service-title">Digital Design</p>
       <p class="service-desc">
-        Campaigns that cut through for education, community services, and
-        purpose-led organisations seeking real, lasting outcomes.
+        Social graphics, campaign assets, email templates, and digital
+        collateral — designed with intent and built for real-world use.
       </p>
     </div>
     <div class="service-card reveal" style="transition-delay:0.3s">
       <p class="service-num">04</p>
-      <p class="service-title">Strategic Consulting</p>
+      <p class="service-title">Brand Strategy</p>
       <p class="service-desc">
-        Practical, grounded consulting for organisations navigating growth,
-        change, or a renewed sense of direction.
+        Messaging, positioning, and communications direction to ground
+        your visual work in something that actually means something.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ─── STATS BAR ─────────────────────────────────────────── -->
-<div class="stats-bar reveal">
-  <div class="stat">
-    <p class="stat-num">8<span>+</span></p>
-    <p class="stat-label">Years in the field</p>
-  </div>
-  <div class="stat">
-    <p class="stat-num">20<span>+</span></p>
-    <p class="stat-label">Projects delivered</p>
-  </div>
-  <div class="stat">
-    <p class="stat-num">2</p>
-    <p class="stat-label">Sectors: Education &amp; Care</p>
-  </div>
-</div>
-
 <!-- ─── WHERE I'VE WORKED ─────────────────────────────────── -->
 <section id="work">
-  <p class="section-tag reveal"><span class="num">03</span>Where I've Worked</p>
+  <p class="section-tag reveal"><span class="num">03</span>Work I've Done</p>
   <div class="work-list">
 
     <a href="https://www.ncc.qld.edu.au" target="_blank" rel="noopener" class="work-item reveal">
       <div>
         <p class="work-name">Nambour Christian College</p>
         <p class="work-desc">
-          Supporting a school community focused on education shaped by
-          integrity, genuine care, and development of the whole person.
+          Web design and digital presence for a school community —
+          building trust with families through clear, considered design.
         </p>
         <p class="work-arrow">Visit site &rarr;</p>
       </div>
@@ -798,83 +1174,169 @@
       <div>
         <p class="work-name">Support Coordination Sunny Coast</p>
         <p class="work-desc">
-          Contributing to work that provides meaningful support and
-          coordination for individuals and families navigating complex needs.
+          Visual identity and website for a disability services provider —
+          making complex support feel accessible and human.
         </p>
         <p class="work-arrow">Visit site &rarr;</p>
       </div>
       <span class="work-tag">Disability Services</span>
     </a>
 
+    <a href="https://www.fionacelebrant.co.uk/" target="_blank" rel="noopener" class="work-item reveal">
+      <div>
+        <p class="work-name">Fiona Celebrant</p>
+        <p class="work-desc">
+          Website for Fiona Dickson, an independent wedding and funeral
+          celebrant in Glasgow — designed to reflect the warmth and care
+          she brings to life's most meaningful moments.
+        </p>
+        <p class="work-arrow">Visit site &rarr;</p>
+      </div>
+      <span class="work-tag">Celebrant</span>
+    </a>
+
   </div>
 </section>
-
-<!-- ─── WHY THIS MATTERS ──────────────────────────────────── -->
 <section id="why">
   <p class="section-tag reveal"><span class="num">04</span>Why This Matters</p>
   <div class="why-layout">
     <div>
       <h2 class="why-headline reveal">
-        Purpose without<br>
-        strategy is just<br>
-        <em>good intentions.</em>
+        Great design<br>
+        builds trust<br>
+        <em>before you speak.</em>
       </h2>
     </div>
     <div class="why-body reveal">
       <p>
-        Education and community services shape real lives. When they
-        communicate clearly and operate with genuine intention, they build
-        trust, expand their reach, and create lasting impact.
+        People form a first impression of your organisation in under a
+        second. If your website or brand doesn't reflect the quality of
+        your work, you've already lost them.
       </p>
       <p>
-        I work with organisations that are serious about their mission -
-        and want their strategy, brand, and communications to be equal
-        to the work they're doing.
+        I work with purpose-led organisations that take their digital
+        presence seriously — and want design that earns the trust their
+        work deserves.
       </p>
       <p>
-        Not because it's the easy path, but because it's the right one.
+        Not just something that looks good, but something that works.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER / CTA ──────────────────────────────────────── -->
-<footer id="contact">
-  <div>
-    <p class="footer-headline reveal">
-      Let's start a<br>
-      <a href="mailto:harrisonablack@outlook.com">conversation.</a>
-    </p>
+<!-- ─── ABOUT ──────────────────────────────────────────────── -->
+<section id="about">
+  <p class="section-tag reveal"><span class="num">05</span>About</p>
+  <div class="about-layout">
+    <div class="about-left reveal">
+      <h2 class="about-headline">
+        Designer.<br>
+        Strategist.<br>
+        <em>Sunshine Coast.</em>
+      </h2>
+      <div class="about-tags">
+        <span class="about-tag">Web Design</span>
+        <span class="about-tag">Visual Identity</span>
+        <span class="about-tag">Digital Design</span>
+        <span class="about-tag">Brand Strategy</span>
+        <span class="about-tag">Figma</span>
+        <span class="about-tag">HTML / CSS</span>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <p>
+        I'm Harrison — a freelance designer and digital strategist based on the Sunshine Coast, working with organisations that exist for something bigger than the bottom line.
+      </p>
+      <p>
+        My background sits at the intersection of design and communication. I've worked with schools, disability service providers, and purpose-led organisations — helping them look and communicate as good as the work they actually do.
+      </p>
+      <p>
+        I believe good design is never decoration. It's the clearest expression of what you value, who you're for, and why it matters. When that's done right, the right people find you — and trust you faster.
+      </p>
+      <p>
+        I work with a small number of clients at a time so I can give each project the attention it deserves. If that sounds like the kind of working relationship you're after, I'd love to hear from you.
+      </p>
+    </div>
   </div>
-  <div class="footer-aside reveal">
-    <a href="mailto:harrisonablack@outlook.com" class="footer-email">harrisonablack&#64;outlook.com</a>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Harrison Black &nbsp;·&nbsp; Freelance Marketing &amp; Strategy</span>
-    <span class="footer-pill" role="status" aria-label="Currently available for new projects">
-      <span class="pill-dot" aria-hidden="true"></span>
-      Available for new projects
-    </span>
-  </div>
+</section>
 
-  <!-- Acknowledgement + WCAG -->
+<!-- ─── CONTACT FORM ────────────────────────────────────────── -->
+<section id="contact-form">
+  <p class="section-tag reveal"><span class="num">06</span>Get in Touch</p>
+  <div class="contact-layout">
+    <div class="contact-left">
+      <a href="tel:+61413457356" class="contact-cta-wrap reveal">
+        <p class="footer-headline">
+          Let's start a<br>
+          <span class="footer-convo">conversation.</span>
+        </p>
+      </a>
+      <p class="contact-reply-note reveal">I'll aim to reply within one business day.</p>
+    </div>
+    <div class="contact-right reveal">
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="cf-org">Organisation</label>
+            <input type="text" id="cf-org" placeholder="Your organisation" autocomplete="organization" />
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-field">
+          <label for="cf-service">What are you looking for?</label>
+          <select id="cf-service">
+            <option value="" disabled selected>Select a service</option>
+            <option>Web Design</option>
+            <option>Visual Identity</option>
+            <option>Digital Design</option>
+            <option>Brand Strategy</option>
+            <option>Not sure yet — let's talk</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="cf-message">Tell me more</label>
+          <textarea id="cf-message" rows="5" placeholder="What's the project? What's the problem you're trying to solve?"></textarea>
+        </div>
+        <div class="form-submit-row">
+          <button type="button" class="form-submit" id="cf-submit" onclick="handleFormSubmit()">
+            Send message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="form-note">Or email directly: <a href="mailto:harrisonablack@outlook.com">harrisonablack@outlook.com</a></p>
+        </div>
+        <div class="form-success" id="cf-success" aria-live="polite">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M6 10l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Message sent — I'll be in touch soon.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────────────── -->
+<footer id="contact">
+  <!-- Acknowledgement + WCAG + Privacy — 3 equal columns -->
   <div class="footer-meta">
 
-    <!-- Acknowledgement of Country -->
     <div class="footer-meta-item">
       <div class="footer-meta-icon" aria-hidden="true">
-        <!-- Two flag outlines stacked, matching accessibility icon style -->
-        <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aboriginal and Torres Strait Islander flags">
-          <!-- Aboriginal flag outline: rect with centre divider + circle -->
-          <rect x="1" y="1" width="20" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>
-          <line x1="1" y1="5.5" x2="21" y2="5.5" stroke="currentColor" stroke-width="1.1"/>
-          <circle cx="11" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.1"/>
-          <!-- TSI flag outline: rect with cross dividers + star -->
-          <rect x="1" y="12" width="20" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>
-          <line x1="1" y1="16.5" x2="21" y2="16.5" stroke="currentColor" stroke-width="1.1"/>
-          <line x1="11" y1="12" x2="11" y2="21" stroke="currentColor" stroke-width="1.1"/>
-          <!-- simplified 5pt star at centre of TSI flag -->
-          <polygon points="11,13.8 11.5,15.3 13,15.3 11.9,16.2 12.3,17.7 11,16.8 9.7,17.7 10.1,16.2 9,15.3 10.5,15.3" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"/>
+        <svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aboriginal flag">
+          <rect x="1" y="1" width="20" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <line x1="1" y1="7" x2="21" y2="7" stroke="currentColor" stroke-width="1.1"/>
+          <circle cx="11" cy="7" r="2.4" fill="none" stroke="currentColor" stroke-width="1.1"/>
         </svg>
       </div>
       <div class="footer-meta-text">
@@ -883,18 +1345,14 @@
       </div>
     </div>
 
-    <!-- Accessibility -->
     <div class="footer-meta-item">
       <div class="footer-meta-icon" aria-hidden="true">
-        <!-- Minimal accessibility icon: person + WCAG label -->
         <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
-          <!-- Person with raised arms -->
           <circle cx="7" cy="4.5" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
           <line x1="7" y1="6.5" x2="7" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
           <line x1="7" y1="13" x2="4.5" y2="18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
           <line x1="7" y1="13" x2="9.5" y2="18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
           <line x1="3.5" y1="9.5" x2="10.5" y2="8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-          <!-- AA badge -->
           <rect x="13" y="7" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
           <text x="17" y="13.2" font-family="monospace" font-size="5.5" font-weight="700" fill="currentColor" text-anchor="middle">AA</text>
         </svg>
@@ -905,10 +1363,33 @@
       </div>
     </div>
 
+    <div class="footer-meta-item">
+      <div class="footer-meta-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 9V7a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <rect x="4" y="9" width="14" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <circle cx="11" cy="14.5" r="1.5" fill="none" stroke="currentColor" stroke-width="1.1"/>
+          <line x1="11" y1="16" x2="11" y2="18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="footer-meta-text">
+        <strong>Privacy</strong>
+        This site collects no personal data, sets no cookies, and uses no tracking or analytics. What you do here stays here.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Harrison Black &nbsp;·&nbsp; Freelance Design &amp; Digital</span>
+    <span class="footer-pill" role="status" aria-label="Currently available for new projects">
+      <span class="pill-dot" aria-hidden="true"></span>
+      Available for new projects
+    </span>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   /* ─── Theme Toggle ─────────────────────────────────────── */
   const html      = document.documentElement;
   const toggleBtn = document.getElementById("theme-toggle");
@@ -924,16 +1405,39 @@
       iconSun.style.display  = "block";
       iconMoon.style.display = "none";
     }
-    localStorage.setItem("hb-theme", theme);
+    // Deliberately not persisting — site always loads dark
   }
 
-  const saved = localStorage.getItem("hb-theme") ||
-    (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-  applyTheme(saved);
+  // Head script forced dark — just make sure icon matches
+  iconSun.style.display  = "block";
+  iconMoon.style.display = "none";
 
   toggleBtn.addEventListener("click", () => {
     applyTheme(html.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
+
+  /* ─── Nav Logo Wave + Colour ────────────────────────────── */
+  (function() {
+    const logo    = document.getElementById("nav-logo");
+    const letters = logo.querySelectorAll(".letter");
+    const palette = ["#c8ff2e","#EC12D6","#1CA3C9","#c8ff2e","#EC12D6","#1CA3C9","#c8ff2e","#EC12D6","#1CA3C9","#c8ff2e","#EC12D6","#1CA3C9","#c8ff2e","#EC12D6"];
+    let waving = false;
+    function startWave() {
+      if (waving) return; waving = true;
+      logo.classList.add("waving");
+      letters.forEach((el, i) => {
+        if (el.textContent.trim() === "") return;
+        el.style.color = palette[i % palette.length];
+        el.style.animationDelay = (i * 0.07) + "s";
+      });
+    }
+    function stopWave() {
+      waving = false; logo.classList.remove("waving");
+      letters.forEach(el => { el.style.color = ""; el.style.animationDelay = ""; });
+    }
+    logo.addEventListener("mouseenter", startWave);
+    logo.addEventListener("mouseleave", stopWave);
+  })();
 
   /* ─── Custom Cursor ─────────────────────────────────────── */
   const cursor = document.getElementById("cursor");
@@ -958,47 +1462,640 @@
 
   /* ─── Floating Availability Pill ────────────────────────── */
   const pill = document.getElementById("avail-pill");
-  // Show after a short delay on load
-  setTimeout(() => pill.classList.add("visible"), 1800);
+  if (pill) setTimeout(() => pill.classList.add("visible"), 1800);
 
   /* ─── Typewriter Effect ─────────────────────────────────── */
   const phrases = [
     "value what matters most.",
-    "support society's most vulnerable.",
-    "help people when it counts.",
-    "exist for more than the bottom line.",
-    "build stronger communities.",
-    "make a genuine difference."
+    "deserve great design.",
+    "protect the most vulnerable.",
+    "make a genuine difference.",
+    "exist for more than profit.",
+    "build stronger communities."
   ];
-
   const twEl = document.getElementById("typewriter-text");
-  let pi = 0, ci = 0, deleting = false;
+  if (twEl) {
+    let pi = 0, ci = 0, deleting = false;
+    function type() {
+      const phrase = phrases[pi];
+      if (!deleting) {
+        twEl.textContent = phrase.slice(0, ci + 1);
+        ci++;
+        if (ci === phrase.length) { deleting = true; setTimeout(type, 2200); return; }
+        setTimeout(type, 55);
+      } else {
+        twEl.textContent = phrase.slice(0, ci - 1);
+        ci--;
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(type, 400); return; }
+        setTimeout(type, 32);
+      }
+    }
+    setTimeout(type, 2000);
+  }
 
-  function type() {
-    const phrase = phrases[pi];
-    if (!deleting) {
-      twEl.textContent = phrase.slice(0, ci + 1);
-      ci++;
-      if (ci === phrase.length) {
-        deleting = true;
-        setTimeout(type, 2200);
-        return;
-      }
-      setTimeout(type, 55);
-    } else {
-      twEl.textContent = phrase.slice(0, ci - 1);
-      ci--;
-      if (ci === 0) {
-        deleting = false;
-        pi = (pi + 1) % phrases.length;
-        setTimeout(type, 420);
-        return;
-      }
-      setTimeout(type, 28);
+  /* ─── Contact Form ───────────────────────────────────────── */
+  function handleFormSubmit() {
+    const name    = document.getElementById("cf-name").value.trim();
+    const email   = document.getElementById("cf-email").value.trim();
+    const message = document.getElementById("cf-message").value.trim();
+    const btn     = document.getElementById("cf-submit");
+    const success = document.getElementById("cf-success");
+
+    if (!name || !email || !message) {
+      // Highlight empty required fields
+      ["cf-name","cf-email","cf-message"].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) el.style.borderColor = "var(--magenta)";
+      });
+      return;
+    }
+
+    // Build mailto and open
+    const subject = encodeURIComponent("Project enquiry from " + name);
+    const body    = encodeURIComponent(
+      "Name: " + name + "\n" +
+      "Organisation: " + (document.getElementById("cf-org").value.trim() || "—") + "\n" +
+      "Email: " + email + "\n" +
+      "Service: " + (document.getElementById("cf-service").value || "—") + "\n\n" +
+      message
+    );
+    window.location.href = "mailto:harrisonablack@outlook.com?subject=" + subject + "&body=" + body;
+
+    // Show success state
+    btn.style.display = "none";
+    success.classList.add("visible");
+  }
+
+  /* ─── Scroll Progress Bar ────────────────────────────────── */
+  const progressBar = document.getElementById("scroll-progress");
+  window.addEventListener("scroll", () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrolled / total * 100) + "%";
+  }, { passive: true });
+
+  /* ─── Click Spark Effect ─────────────────────────────────── */
+  /* ─── Click Spark Effect ─────────────────────────────────── */
+  const sparkCanvas = document.createElement("canvas");
+  const sparkCtx = sparkCanvas.getContext("2d");
+  Object.assign(sparkCanvas.style, {
+    position: "fixed", top: "0", left: "0",
+    pointerEvents: "none", zIndex: "9998"
+  });
+  document.body.appendChild(sparkCanvas);
+
+  function resizeSpark() {
+    sparkCanvas.width  = window.innerWidth;
+    sparkCanvas.height = window.innerHeight;
+  }
+  resizeSpark();
+  window.addEventListener("resize", resizeSpark, { passive: true });
+
+  const sparkColors = ["#c8ff2e", "#EC12D6", "#1CA3C9"];
+  let sparks = [];
+  let sparkRAF;
+
+  function spawnSparks(x, y) {
+    for (let i = 0; i < 10; i++) {
+      const angle = (Math.PI * 2 / 10) * i + (Math.random() - 0.5) * 0.4;
+      const speed = 2 + Math.random() * 3.5;
+      sparks.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        decay: 0.03 + Math.random() * 0.03,
+        size: 2.5 + Math.random() * 2,
+        color: sparkColors[Math.floor(Math.random() * sparkColors.length)]
+      });
     }
   }
 
-  setTimeout(type, 2000);
+  function animateSparks() {
+    sparkCtx.clearRect(0, 0, sparkCanvas.width, sparkCanvas.height);
+    sparks = sparks.filter(s => s.life > 0.01);
+    for (const s of sparks) {
+      s.x  += s.vx;
+      s.y  += s.vy;
+      s.vy += 0.15;
+      s.life -= s.decay;
+      const radius = Math.max(0.1, s.size * s.life);
+      sparkCtx.globalAlpha = Math.max(0, s.life);
+      sparkCtx.fillStyle = s.color;
+      sparkCtx.beginPath();
+      sparkCtx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+      sparkCtx.fill();
+    }
+    sparkCtx.globalAlpha = 1;
+    sparkRAF = requestAnimationFrame(animateSparks);
+  }
+  animateSparks();
+
+  document.addEventListener("click", e => {
+    const interactive = e.target.closest(
+      "a, button, input, select, textarea, label, .service-card, .work-item, .nav-logo, .nav-cta, .form-submit, #theme-toggle, #snake-overlay, .footer-cta-wrap, .contact-cta-wrap"
+    );
+    if (!interactive) spawnSparks(e.clientX, e.clientY);
+  });
+
+
+  /* ─── Konami Code → Colour Explosion ────────────────────── */
+  const konamiSequence = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let konamiIndex = 0;
+  document.addEventListener("keydown", e => {
+    if (e.key === konamiSequence[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiSequence.length) {
+        konamiIndex = 0;
+        // Explode sparks from centre
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            for (let j = 0; j < 20; j++) {
+              spawnSparks(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight
+              );
+            }
+          }, i * 120);
+        }
+        // Flash the logo
+        const logo = document.getElementById("nav-logo");
+        logo.style.transition = "color 0.1s";
+        const flashColors = ["#c8ff2e","#EC12D6","#1CA3C9","#c8ff2e"];
+        flashColors.forEach((col, i) => {
+          setTimeout(() => logo.style.color = col, i * 120);
+        });
+        setTimeout(() => logo.style.color = "", 600);
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  /* ─── Secret "hireme" Typing Easter Egg ─────────────────── */
+  let typed = "";
+  document.addEventListener("keypress", e => {
+    typed += e.key.toLowerCase();
+    typed = typed.slice(-6);
+    if (typed === "hireme") {
+      typed = "";
+      // Pop a subtle toast
+      const toast = document.createElement("div");
+      toast.textContent = "👀 Smart move. harrisonablack@outlook.com";
+      toast.style.cssText = `
+        position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+        background:#000; border:1px solid var(--accent); color:var(--accent);
+        font-family:'freight-sans-pro',sans-serif; font-size:0.82rem;
+        font-weight:700; letter-spacing:0.1em; padding:12px 22px;
+        z-index:9999; white-space:nowrap; pointer-events:none;
+        animation: toastIn 0.3s ease forwards;
+      `;
+      const style = document.createElement("style");
+      style.textContent = `@keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`;
+      document.head.appendChild(style);
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+  });
+
+  /* ─── Console Easter Egg — time-aware ───────────────────── */
+  const hour = new Date().getHours();
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+  console.log(
+    "%cHARRISON BLACK",
+    "color:#c8ff2e;font-size:28px;font-weight:900;font-style:italic;font-family:sans-serif;letter-spacing:0.05em;"
+  );
+  console.log(
+    "%cFreelance Design & Digital  ·  Sunshine Coast, AU",
+    "color:#7a7269;font-size:11px;letter-spacing:0.15em;"
+  );
+
+  if (isMobile) {
+    console.log("%cNice. You're on your phone.", "color:#1CA3C9;font-size:12px;font-weight:700;");
+    console.log("%cRespect for checking the console on mobile.", "color:#7a7269;font-size:11px;");
+  } else if (hour >= 23 || hour < 5) {
+    console.log("%c🌙 Burning the midnight oil?", "color:#EC12D6;font-size:13px;font-weight:700;");
+    console.log("%charrisonablack@outlook.com — the inbox doesn't sleep either.", "color:#1CA3C9;font-size:11px;");
+  } else {
+    console.log(
+      "%c👀 You found the console. Nice.\n%charrisonablack@outlook.com",
+      "color:#EC12D6;font-size:12px;font-weight:700;",
+      "color:#1CA3C9;font-size:11px;"
+    );
+  }
+
+  /* ─── Time-aware availability pill ──────────────────────── */
+  (function() {
+    const pillText = document.querySelector(".footer-pill");
+    if (!pillText) return;
+    const h = new Date().getHours();
+    let msg = null;
+    if (h >= 23 || h < 2)  msg = "It's late, but email anyway.";
+    else if (h >= 2 && h < 5)  msg = "Very late. Still, email anyway.";
+    else if (h >= 5 && h < 7)  msg = "Early riser? Let's chat.";
+    if (msg) {
+      const dot = pillText.querySelector(".pill-dot");
+      pillText.innerHTML = "";
+      if (dot) pillText.appendChild(dot);
+      pillText.appendChild(document.createTextNode(msg));
+    }
+  })();
+
+  /* ─── Snake Game — click logo 5× to activate ────────────── */
+  (function() {
+    const CELL   = 18;
+    const COLS   = 20;
+    const ROWS   = 20;
+    const CANVAS_SIZE = CELL * COLS; // 360
+
+    const overlay  = document.getElementById("snake-overlay");
+    const canvas   = document.getElementById("snake-canvas");
+    const ctx      = canvas.getContext("2d");
+    const scoreEl  = document.getElementById("snake-score");
+    const msgEl    = document.getElementById("snake-message");
+    const msgTitle = document.getElementById("snake-msg-title");
+    const msgSub   = document.getElementById("snake-msg-sub");
+
+    // Trigger: click logo 5 times within 2.5s
+    const logo = document.getElementById("nav-logo");
+    let clickCount = 0, clickTimer;
+    logo.addEventListener("click", e => {
+      e.preventDefault();
+      clickCount++;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 2500);
+      if (clickCount >= 5) {
+        clickCount = 0;
+        openSnake();
+      }
+    });
+
+    // Game state
+    let snake, dir, nextDir, food, score, gameLoop, running, started;
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#c8ff2e";
+    }
+
+    function openSnake() {
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+      initGame();
+      draw();
+      msgTitle.textContent = "SNAKE.";
+      msgSub.textContent   = "Press Space to start";
+      msgEl.classList.add("visible");
+    }
+
+    window.closeSnake = function() {
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+      clearInterval(gameLoop);
+      running = false;
+    };
+
+    function initGame() {
+      clearInterval(gameLoop);
+      running = false;
+      started = false;
+      score   = 0;
+      scoreEl.textContent = "0";
+      snake   = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+      dir     = { x: 1, y: 0 };
+      nextDir = { x: 1, y: 0 };
+      placeFood();
+    }
+
+    function placeFood() {
+      let pos;
+      do {
+        pos = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+      } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+      food = pos;
+    }
+
+    function step() {
+      dir = nextDir;
+      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+      // Wall collision
+      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+        return gameOver();
+      }
+      // Self collision
+      if (snake.some(s => s.x === head.x && s.y === head.y)) {
+        return gameOver();
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        scoreEl.textContent = score;
+        // Spawn sparks at food location
+        const px = food.x * CELL + CELL/2 + canvas.getBoundingClientRect().left;
+        const py = food.y * CELL + CELL/2 + canvas.getBoundingClientRect().top;
+        if (typeof spawnSparks === "function") spawnSparks(px, py);
+        placeFood();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function gameOver() {
+      clearInterval(gameLoop);
+      running = false;
+      msgTitle.textContent = score > 0 ? `SCORE: ${score}` : "GAME OVER.";
+      msgSub.textContent   = "Press Space to restart";
+      msgEl.classList.add("visible");
+    }
+
+    function draw() {
+      const accent  = getCSSVar("--accent");
+      const magenta = getCSSVar("--magenta");
+      const cyan    = getCSSVar("--cyan");
+
+      // Background
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+      // Grid dots
+      ctx.fillStyle = "rgba(30,30,30,0.8)";
+      for (let x = 0; x < COLS; x++) {
+        for (let y = 0; y < ROWS; y++) {
+          ctx.beginPath();
+          ctx.arc(x * CELL + CELL/2, y * CELL + CELL/2, 1, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      // Food — pulsing magenta square
+      const pulse = 0.7 + 0.3 * Math.sin(Date.now() / 200);
+      const fs = CELL * 0.55 * pulse;
+      ctx.fillStyle = magenta;
+      ctx.shadowColor = magenta;
+      ctx.shadowBlur = 8;
+      ctx.fillRect(
+        food.x * CELL + (CELL - fs)/2,
+        food.y * CELL + (CELL - fs)/2,
+        fs, fs
+      );
+      ctx.shadowBlur = 0;
+
+      // Snake
+      snake.forEach((seg, i) => {
+        const isHead = i === 0;
+        const t = i / snake.length;
+        // Gradient: head = accent, tail = cyan
+        ctx.fillStyle = isHead ? accent : `rgba(28,163,201,${0.9 - t * 0.5})`;
+        if (isHead) {
+          ctx.shadowColor = accent;
+          ctx.shadowBlur  = 10;
+        }
+        const pad = isHead ? 1 : 2;
+        const r   = isHead ? 4 : 2;
+        const x   = seg.x * CELL + pad;
+        const y   = seg.y * CELL + pad;
+        const s   = CELL - pad * 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, s, s, r);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
+    // Continuous draw for food pulse
+    function drawLoop() {
+      if (overlay.classList.contains("active")) {
+        draw();
+        requestAnimationFrame(drawLoop);
+      }
+    }
+
+    // Controls
+    const keyMap = {
+      ArrowUp: {x:0,y:-1}, ArrowDown: {x:0,y:1},
+      ArrowLeft: {x:-1,y:0}, ArrowRight: {x:1,y:0},
+      w: {x:0,y:-1}, s: {x:0,y:1}, a: {x:-1,y:0}, d: {x:1,y:0},
+      W: {x:0,y:-1}, S: {x:0,y:1}, A: {x:-1,y:0}, D: {x:1,y:0},
+    };
+
+    document.addEventListener("keydown", e => {
+      if (!overlay.classList.contains("active")) return;
+
+      if (e.key === "Escape") { closeSnake(); return; }
+
+      if (e.key === " ") {
+        e.preventDefault();
+        if (!running) {
+          initGame();
+          msgEl.classList.remove("visible");
+          running = true;
+          started = true;
+          clearInterval(gameLoop);
+          gameLoop = setInterval(step, 120);
+          requestAnimationFrame(drawLoop);
+        }
+        return;
+      }
+
+      const newDir = keyMap[e.key];
+      if (newDir) {
+        e.preventDefault();
+        // Prevent reversing
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+        }
+      }
+    });
+
+    // Touch/swipe for mobile
+    let touchStart = null;
+    canvas.addEventListener("touchstart", e => { touchStart = e.touches[0]; }, { passive: true });
+    canvas.addEventListener("touchend", e => {
+      if (!touchStart || !running) return;
+      const dx = e.changedTouches[0].clientX - touchStart.clientX;
+      const dy = e.changedTouches[0].clientY - touchStart.clientY;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        nextDir = dx > 0 ? {x:1,y:0} : {x:-1,y:0};
+      } else {
+        nextDir = dy > 0 ? {x:0,y:1} : {x:0,y:-1};
+      }
+    }, { passive: true });
+
+    // Start draw loop when overlay opens
+    const origOpen = openSnake;
+    openSnake = function() {
+      origOpen();
+      requestAnimationFrame(drawLoop);
+    };
+  })();
+
+
+  (function() {
+    const positions = [];
+    const maxPos = 32;
+    let rainbowActive = false;
+    let rainbowTimeout;
+
+    function getAngle(a, b) {
+      return Math.atan2(b.y - a.y, b.x - a.x);
+    }
+
+    document.addEventListener("mousemove", e => {
+      positions.push({ x: e.clientX, y: e.clientY });
+      if (positions.length > maxPos) positions.shift();
+
+      if (!rainbowActive && detectCircle(positions)) {
+        rainbowActive = true;
+        positions.length = 0;
+
+        // Drop rainbow sparks for 2 seconds
+        const rainbow = ["#c8ff2e","#1CA3C9","#EC12D6","#ff6b35","#a855f7","#06d6a0"];
+        let rx = e.clientX, ry = e.clientY;
+        const trail = setInterval(() => {
+          for (let i = 0; i < 3; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1 + Math.random() * 2;
+            sparks.push({
+              x: rx + (Math.random() - 0.5) * 20,
+              y: ry + (Math.random() - 0.5) * 20,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              life: 1,
+              decay: 0.025 + Math.random() * 0.025,
+              size: 3 + Math.random() * 3,
+              color: rainbow[Math.floor(Math.random() * rainbow.length)]
+            });
+          }
+        }, 30);
+
+        const moveUpdate = ev => { rx = ev.clientX; ry = ev.clientY; };
+        document.addEventListener("mousemove", moveUpdate, { passive: true });
+
+        clearTimeout(rainbowTimeout);
+        rainbowTimeout = setTimeout(() => {
+          clearInterval(trail);
+          document.removeEventListener("mousemove", moveUpdate);
+          rainbowActive = false;
+        }, 2000);
+      }
+    }, { passive: true });
+  })();
+
+  /* ─── Type "change" → flash hero headline ────────────────── */
+  /* ─── Type "design" → cursor becomes pen nib ─────────────── */
+  (function() {
+    let typedBuf = "";
+    const hero = document.querySelector(".hero-headline");
+    const cursorDot = document.getElementById("cursor");
+
+    document.addEventListener("keypress", e => {
+      // Skip if user is typing in a form field
+      if (["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) return;
+      typedBuf += e.key.toLowerCase();
+      typedBuf = typedBuf.slice(-8);
+
+      if (typedBuf.endsWith("change") && hero) {
+        typedBuf = "";
+        const colors = ["#c8ff2e","#1CA3C9","#EC12D6","#c8ff2e"];
+        colors.forEach((col, i) => {
+          setTimeout(() => { hero.style.color = col; }, i * 120);
+        });
+        setTimeout(() => { hero.style.color = ""; }, colors.length * 120 + 80);
+      }
+
+      if (typedBuf.endsWith("design") && cursorDot) {
+        typedBuf = "";
+        // Replace dot with a pen nib SVG
+        const nib = document.createElement("div");
+        nib.id = "cursor-nib";
+        nib.style.cssText = `
+          position:fixed; pointer-events:none; z-index:9999;
+          transform:translate(-50%,-50%) rotate(-45deg);
+          transition: none; font-size:18px; line-height:1;
+        `;
+        nib.textContent = "✒️";
+        document.body.appendChild(nib);
+        cursorDot.style.opacity = "0";
+
+        const moveNib = ev => {
+          nib.style.left = ev.clientX + "px";
+          nib.style.top  = ev.clientY + "px";
+        };
+        document.addEventListener("mousemove", moveNib, { passive: true });
+
+        setTimeout(() => {
+          nib.remove();
+          cursorDot.style.opacity = "1";
+          document.removeEventListener("mousemove", moveNib);
+        }, 5000);
+      }
+    });
+  })();
+
+  /* ─── Shift+S → watermark stamp ─────────────────────────── */
+  document.addEventListener("keydown", e => {
+    if (e.key === "S" && e.shiftKey && !["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) {
+      const existing = document.getElementById("hb-watermark");
+      if (existing) return;
+
+      const wm = document.createElement("div");
+      wm.id = "hb-watermark";
+      wm.innerHTML = `
+        <svg width="300" height="90" viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="296" height="86" rx="6" fill="none" stroke="#c8ff2e" stroke-width="2" opacity="0.9"/>
+          <rect x="8" y="8" width="284" height="74" rx="4" fill="none" stroke="#c8ff2e" stroke-width="0.8" opacity="0.4"/>
+          <text x="150" y="36" font-family="Arial" font-weight="900" font-style="italic" font-size="22" fill="#c8ff2e" text-anchor="middle" letter-spacing="1.5" opacity="0.95">HARRISON BLACK</text>
+          <text x="150" y="54" font-family="Arial" font-size="8.5" fill="#7a7269" text-anchor="middle" letter-spacing="4">FREELANCE DESIGN &amp; DIGITAL</text>
+          <line x1="30" y1="62" x2="270" y2="62" stroke="#1e1e1e" stroke-width="0.8"/>
+          <text x="150" y="74" font-family="Arial" font-size="7.5" fill="#7a7269" text-anchor="middle" letter-spacing="2">SUNSHINE COAST · AU · 2026</text>
+        </svg>`;
+      wm.style.cssText = `
+        position:fixed; bottom:48px; right:48px; z-index:9997;
+        opacity:0; pointer-events:none;
+        transition: opacity 0.4s ease;
+        filter: drop-shadow(0 0 12px rgba(200,255,46,0.3));
+      `;
+      document.body.appendChild(wm);
+      requestAnimationFrame(() => { wm.style.opacity = "1"; });
+      setTimeout(() => {
+        wm.style.opacity = "0";
+        setTimeout(() => wm.remove(), 400);
+      }, 3500);
+    }
+  });
+
+  /* ─── Fast scroll-to-top → magenta progress flash ───────── */
+  (function() {
+    let lastY = window.scrollY;
+    let lastTime = Date.now();
+    let flashTimeout;
+
+    window.addEventListener("scroll", () => {
+      const now = Date.now();
+      const y = window.scrollY;
+      const velocity = (lastY - y) / (now - lastTime); // positive = scrolling up
+
+      if (velocity > 2.5 && y < 200) {
+        // Fast scroll back near top — flash magenta
+        clearTimeout(flashTimeout);
+        progressBar.style.transition = "background 0.15s ease, width 0.1s linear";
+        progressBar.style.background = "var(--magenta)";
+        flashTimeout = setTimeout(() => {
+          progressBar.style.background = "linear-gradient(to right, var(--accent), var(--magenta))";
+          progressBar.style.transition = "background 0.4s ease, width 0.1s linear";
+        }, 600);
+      }
+
+      lastY = y;
+      lastTime = now;
+    }, { passive: true });
+  })();
+
 </script>
 </body>
 </html>
