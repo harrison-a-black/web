@@ -1153,6 +1153,7 @@
   </div>
 </section>
 
+<!-- ─── STATS BAR ─────────────────────────────────────────── -->
 <!-- ─── WHERE I'VE WORKED ─────────────────────────────────── -->
 <section id="work">
   <p class="section-tag reveal"><span class="num">03</span>Work I've Done</p>
@@ -1676,10 +1677,10 @@
     console.log("%cRespect for checking the console on mobile.", "color:#7a7269;font-size:11px;");
   } else if (hour >= 23 || hour < 5) {
     console.log("%c🌙 Burning the midnight oil?", "color:#EC12D6;font-size:13px;font-weight:700;");
-    console.log("%charrisonablack@outlook.com — the inbox doesn't sleep either.", "color:#1CA3C9;font-size:11px;");
+    console.log("%charriso nablack@outlook.com — the inbox doesn't sleep either.", "color:#1CA3C9;font-size:11px;");
   } else {
     console.log(
-      "%c👀 You found the console. Nice.\n%charrisonablack@outlook.com",
+      "%c👀 You found the console. Nice.\n%charriso nablack@outlook.com",
       "color:#EC12D6;font-size:12px;font-weight:700;",
       "color:#1CA3C9;font-size:11px;"
     );
@@ -1733,6 +1734,7 @@
 
     // Game state
     let snake, dir, nextDir, food, score, gameLoop, running, started;
+    let currentCols = COLS, currentRows = ROWS;
 
     function getCSSVar(name) {
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#c8ff2e";
@@ -1741,10 +1743,20 @@
     function openSnake() {
       overlay.classList.add("active");
       document.body.style.overflow = "hidden";
+      // Sync canvas internal resolution to its CSS display size
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width > 0) {
+        canvas.width  = rect.width;
+        canvas.height = rect.height;
+        // Recalculate cell size based on actual canvas size
+        currentCols = Math.floor(canvas.width / CELL);
+        currentRows = Math.floor(canvas.height / CELL);
+      }
       initGame();
       draw();
+      const isTouchDev = window.matchMedia("(pointer: coarse)").matches;
       msgTitle.textContent = "SNAKE.";
-      msgSub.textContent   = "Press Space to start";
+      msgSub.textContent   = isTouchDev ? "Tap to start, swipe to move" : "Press Space to start";
       msgEl.classList.add("visible");
     }
 
@@ -1761,7 +1773,9 @@
       started = false;
       score   = 0;
       scoreEl.textContent = "0";
-      snake   = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+      const midX = Math.floor(currentCols / 2);
+      const midY = Math.floor(currentRows / 2);
+      snake   = [{ x: midX, y: midY }, { x: midX-1, y: midY }, { x: midX-2, y: midY }];
       dir     = { x: 1, y: 0 };
       nextDir = { x: 1, y: 0 };
       placeFood();
@@ -1770,7 +1784,7 @@
     function placeFood() {
       let pos;
       do {
-        pos = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+        pos = { x: Math.floor(Math.random() * currentCols), y: Math.floor(Math.random() * currentRows) };
       } while (snake.some(s => s.x === pos.x && s.y === pos.y));
       food = pos;
     }
@@ -1780,7 +1794,7 @@
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
       // Wall collision
-      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+      if (head.x < 0 || head.x >= currentCols || head.y < 0 || head.y >= currentRows) {
         return gameOver();
       }
       // Self collision
@@ -1824,8 +1838,8 @@
 
       // Grid dots
       ctx.fillStyle = "rgba(30,30,30,0.8)";
-      for (let x = 0; x < COLS; x++) {
-        for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < currentCols; x++) {
+        for (let y = 0; y < currentRows; y++) {
           ctx.beginPath();
           ctx.arc(x * CELL + CELL/2, y * CELL + CELL/2, 1, 0, Math.PI*2);
           ctx.fill();
@@ -1926,6 +1940,30 @@
       }
     }, { passive: true });
 
+    // Tap anywhere on overlay to start (mobile)
+    overlay.addEventListener("touchend", e => {
+      if (running) return;
+      if (e.target === canvas) return; // handled by canvas swipe
+      initGame();
+      msgEl.classList.remove("visible");
+      running = true;
+      clearInterval(gameLoop);
+      gameLoop = setInterval(step, 130);
+      requestAnimationFrame(drawLoop);
+    }, { passive: true });
+
+    // Also tap canvas to start when not running
+    canvas.addEventListener("touchend", e => {
+      if (running) return;
+      e.stopPropagation();
+      initGame();
+      msgEl.classList.remove("visible");
+      running = true;
+      clearInterval(gameLoop);
+      gameLoop = setInterval(step, 130);
+      requestAnimationFrame(drawLoop);
+    });
+
     // Start draw loop when overlay opens
     const origOpen = openSnake;
     openSnake = function() {
@@ -1935,56 +1973,6 @@
   })();
 
 
-  (function() {
-    const positions = [];
-    const maxPos = 32;
-    let rainbowActive = false;
-    let rainbowTimeout;
-
-    function getAngle(a, b) {
-      return Math.atan2(b.y - a.y, b.x - a.x);
-    }
-
-    document.addEventListener("mousemove", e => {
-      positions.push({ x: e.clientX, y: e.clientY });
-      if (positions.length > maxPos) positions.shift();
-
-      if (!rainbowActive && detectCircle(positions)) {
-        rainbowActive = true;
-        positions.length = 0;
-
-        // Drop rainbow sparks for 2 seconds
-        const rainbow = ["#c8ff2e","#1CA3C9","#EC12D6","#ff6b35","#a855f7","#06d6a0"];
-        let rx = e.clientX, ry = e.clientY;
-        const trail = setInterval(() => {
-          for (let i = 0; i < 3; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = 1 + Math.random() * 2;
-            sparks.push({
-              x: rx + (Math.random() - 0.5) * 20,
-              y: ry + (Math.random() - 0.5) * 20,
-              vx: Math.cos(angle) * speed,
-              vy: Math.sin(angle) * speed,
-              life: 1,
-              decay: 0.025 + Math.random() * 0.025,
-              size: 3 + Math.random() * 3,
-              color: rainbow[Math.floor(Math.random() * rainbow.length)]
-            });
-          }
-        }, 30);
-
-        const moveUpdate = ev => { rx = ev.clientX; ry = ev.clientY; };
-        document.addEventListener("mousemove", moveUpdate, { passive: true });
-
-        clearTimeout(rainbowTimeout);
-        rainbowTimeout = setTimeout(() => {
-          clearInterval(trail);
-          document.removeEventListener("mousemove", moveUpdate);
-          rainbowActive = false;
-        }, 2000);
-      }
-    }, { passive: true });
-  })();
 
   /* ─── Type "change" → flash hero headline ────────────────── */
   /* ─── Type "design" → cursor becomes pen nib ─────────────── */
